@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurelle — Your AI Style Aura</title>
+<meta name="description" content="Aurelle digitises your wardrobe, learns your style, and delivers AI-powered outfit suggestions every morning. Weather-aware. Calendar-smart. Uniquely you.">
+<meta property="og:title" content="Aurelle — Your AI Style Aura">
+<meta property="og:description" content="Your AI-powered personal stylist. Digitise your wardrobe, get daily outfit suggestions, and never wonder what to wear again.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0F1A2E; --navy-l:#1B2A4A; --gold:#C9A96E; --gold-l:#E8D5B0;
+  --gold-p:#F7F0E4; --cream:#FEFBF6; --cream-d:#F5EDE0; --rose:#D4A0A0;
+  --txt:#2C2C2C; --txt-l:#6B6B6B; --wht:#FFFFFF;
+  --ff-d:'Playfair Display',Georgia,serif; --ff-b:'DM Sans',-apple-system,sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-b);color:var(--txt);background:var(--cream);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.ctn{max-width:1200px;margin:0 auto;padding:0 24px}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 0;transition:all .4s cubic-bezier(.16,1,.3,1)}
+nav.scrolled{background:rgba(254,251,246,.92);backdrop-filter:blur(20px);padding:14px 0;box-shadow:0 1px 0 rgba(201,169,110,.15)}
+nav .ctn{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:var(--ff-d);font-size:1.65rem;font-weight:600;color:var(--navy);text-decoration:none;letter-spacing:.02em}
+.logo span{color:var(--gold)}
+.nav-l{display:flex;align-items:center;gap:32px}
+.nav-l a{font-size:.88rem;font-weight:500;color:var(--txt-l);text-decoration:none;letter-spacing:.03em;transition:color .3s}
+.nav-l a:hover{color:var(--navy)}
+.nav-c{background:var(--navy)!important;color:var(--cream)!important;padding:10px 24px!important;border-radius:100px;font-weight:600!important;transition:all .3s!important}
+.nav-c:hover{background:var(--navy-l)!important;transform:translateY(-1px)}
+.mob-btn{display:none;background:none;border:none;cursor:pointer;padding:8px}
+.mob-btn span{display:block;width:24px;height:2px;background:var(--navy);margin:5px 0;border-radius:2px;transition:all .3s}
+
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;padding:120px 0 80px;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-20%;right:-10%;width:700px;height:700px;background:radial-gradient(ellipse,rgba(201,169,110,.12) 0%,transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-10%;left:-5%;width:500px;height:500px;background:radial-gradient(ellipse,rgba(212,160,160,.08) 0%,transparent 70%);border-radius:50%}
+.hero .ctn{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero-c{position:relative;z-index:2}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:linear-gradient(135deg,var(--gold-p),rgba(201,169,110,.15));border:1px solid rgba(201,169,110,.25);border-radius:100px;font-size:.78rem;font-weight:600;color:var(--navy-l);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;animation:fu .8s ease both}
+.badge::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+.hero h1{font-family:var(--ff-d);font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:600;line-height:1.12;color:var(--navy);margin-bottom:24px;animation:fu .8s .1s ease both}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-s{font-size:1.15rem;line-height:1.7;color:var(--txt-l);max-width:480px;margin-bottom:40px;animation:fu .8s .2s ease both}
+.hero-a{display:flex;gap:16px;align-items:center;animation:fu .8s .3s ease both;flex-wrap:wrap}
+.bp,.bs{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:100px;font-family:var(--ff-b);font-size:.95rem;font-weight:600;letter-spacing:.04em;border:none;cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);text-decoration:none}
+.bp{background:var(--navy);color:var(--cream)}
+.bp:hover{background:var(--navy-l);transform:translateY(-2px);box-shadow:0 12px 40px rgba(15,26,46,.2)}
+.bs{background:transparent;color:var(--navy);border:1.5px solid rgba(15,26,46,.2)}
+.bs:hover{border-color:var(--navy);background:rgba(15,26,46,.03)}
+.hero-st{display:flex;gap:40px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(201,169,110,.2);animation:fu .8s .4s ease both}
+.st-n{font-family:var(--ff-d);font-size:1.6rem;font-weight:600;color:var(--navy)}
+.st-l{font-size:.78rem;color:var(--txt-l);margin-top:4px}
+
+.hero-v{position:relative;z-index:2;animation:fr 1s .3s ease both}
+.ph-m{position:relative;max-width:340px;margin:0 auto}
+.ph-f{background:var(--navy);border-radius:40px;padding:12px;box-shadow:0 40px 80px rgba(15,26,46,.25),0 0 0 1px rgba(201,169,110,.1)}
+.ph-s{background:linear-gradient(170deg,#FEFBF6 0%,#F7F0E4 40%,#F0E8D8 100%);border-radius:30px;padding:40px 24px 30px;min-height:540px;display:flex;flex-direction:column}
+.ph-n{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:28px;background:var(--navy);border-radius:0 0 18px 18px;z-index:3}
+.mh{text-align:center;margin-bottom:20px;padding-top:16px}
+.mg{font-size:.75rem;color:var(--txt-l);letter-spacing:.06em;text-transform:uppercase}
+.mt{font-family:var(--ff-d);font-size:1.3rem;color:var(--navy);margin-top:4px}
+.mw{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;background:rgba(201,169,110,.1);border-radius:12px;margin-bottom:20px;font-size:.8rem;color:var(--txt-l)}
+.mc{background:var(--wht);border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.04);flex:1}
+.ml{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:12px}
+.mgr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.mi{aspect-ratio:1;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem}
+.mi:nth-child(1){background:linear-gradient(135deg,#E8E4E0,#D4CFC8)}
+.mi:nth-child(2){background:linear-gradient(135deg,#2C3E5A,#1B2A4A)}
+.mi:nth-child(3){background:linear-gradient(135deg,#C9A96E,#B08D4A)}
+.mi:nth-child(4){background:linear-gradient(135deg,#D4A0A0,#C08080)}
+.mr{font-size:.78rem;color:var(--txt-l);line-height:1.5;font-style:italic}
+.mr strong{color:var(--navy);font-style:normal}
+.ma{display:flex;gap:8px;margin-top:14px}
+.mb{flex:1;padding:10px;border-radius:12px;border:none;font-size:.75rem;font-weight:600;cursor:default;letter-spacing:.03em}
+.mb1{background:var(--navy);color:var(--cream)}.mb2{background:rgba(15,26,46,.06);color:var(--txt-l)}.mb3{background:rgba(201,169,110,.15);color:var(--navy)}
+
+.fl{position:absolute;background:var(--wht);border-radius:16px;padding:14px 18px;box-shadow:0 8px 30px rgba(0,0,0,.08);display:flex;align-items:center;gap:10px;font-size:.82rem;font-weight:500;color:var(--navy);z-index:4}
+.fl-i{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.fl1{top:15%;right:-20px;animation:flt 4s ease-in-out infinite}
+.fl1 .fl-i{background:rgba(201,169,110,.15)}
+.fl2{bottom:20%;left:-30px;animation:flt 4s 2s ease-in-out infinite}
+.fl2 .fl-i{background:rgba(212,160,160,.2)}
+
+.intg{padding:60px 0;border-top:1px solid rgba(201,169,110,.12);border-bottom:1px solid rgba(201,169,110,.12)}
+.intg-l{text-align:center;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-l);margin-bottom:28px}
+.intg-g{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;opacity:.4}
+.intg-g span{font-family:var(--ff-d);font-size:1.3rem;font-weight:600;color:var(--navy)}
+
+.sl{font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.stt{font-family:var(--ff-d);font-size:clamp(2rem,4vw,2.8rem);font-weight:600;color:var(--navy);line-height:1.2;margin-bottom:16px}
+.ssb{font-size:1.05rem;color:var(--txt-l);line-height:1.7;max-width:540px;margin-bottom:64px}
+
+.how{padding:120px 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;position:relative}
+.steps::before{content:'';position:absolute;top:60px;left:16.66%;right:16.66%;height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),var(--gold),var(--gold-l),transparent)}
+.step{text-align:center;position:relative}
+.step-n{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-family:var(--ff-d);font-size:1.6rem;font-weight:600;position:relative;z-index:2}
+.step:nth-child(1) .step-n{background:linear-gradient(135deg,var(--gold-p),rgba(201,169,110,.2));color:var(--navy);border:2px solid var(--gold-l)}
+.step:nth-child(2) .step-n{background:linear-gradient(135deg,var(--navy),var(--navy-l));color:var(--gold-l);border:2px solid var(--navy)}
+.step:nth-child(3) .step-n{background:linear-gradient(135deg,var(--gold),#B08D4A);color:var(--wht);border:2px solid var(--gold)}
+.step-i{font-size:1.8rem;margin-bottom:16px}
+.step h3{font-family:var(--ff-d);font-size:1.25rem;font-weight:600;color:var(--navy);margin-bottom:10px}
+.step p{font-size:.92rem;color:var(--txt-l);line-height:1.6;max-width:300px;margin:0 auto}
+
+.feat{padding:120px 0;background:var(--navy);position:relative;overflow:hidden}
+.feat::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(ellipse,rgba(201,169,110,.08) 0%,transparent 70%);border-radius:50%}
+.feat .sl{color:var(--gold-l)}.feat .stt{color:var(--cream)}.feat .ssb{color:rgba(254,251,246,.6)}
+.fg{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.fc{background:rgba(255,255,255,.04);border:1px solid rgba(201,169,110,.1);border-radius:24px;padding:40px;transition:all .5s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,.3),transparent);opacity:0;transition:opacity .5s}
+.fc:hover{background:rgba(255,255,255,.07);border-color:rgba(201,169,110,.2);transform:translateY(-4px)}
+.fc:hover::before{opacity:1}
+.fc-i{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:24px}
+.fc:nth-child(1) .fc-i{background:rgba(201,169,110,.15)}
+.fc:nth-child(2) .fc-i{background:rgba(212,160,160,.15)}
+.fc:nth-child(3) .fc-i{background:rgba(110,160,201,.15)}
+.fc:nth-child(4) .fc-i{background:rgba(160,201,150,.15)}
+.fc:nth-child(5) .fc-i{background:rgba(180,160,220,.15)}
+.fc:nth-child(6) .fc-i{background:rgba(220,180,140,.15)}
+.fc h3{font-family:var(--ff-d);font-size:1.25rem;font-weight:600;color:var(--cream);margin-bottom:10px}
+.fc p{font-size:.92rem;color:rgba(254,251,246,.55);line-height:1.65}
+
+.found{padding:120px 0;background:linear-gradient(180deg,var(--cream) 0%,var(--gold-p) 50%,var(--cream) 100%)}
+.found .ctn{max-width:900px}
+.found-c{background:var(--wht);border-radius:32px;padding:64px;text-align:center;border:1px solid rgba(201,169,110,.2);box-shadow:0 40px 80px rgba(201,169,110,.1);position:relative;overflow:hidden}
+.found-c::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold-l),var(--gold),var(--gold-l))}
+.found-b{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:linear-gradient(135deg,var(--gold),#B08D4A);border-radius:100px;font-size:.72rem;font-weight:700;color:var(--wht);letter-spacing:.12em;text-transform:uppercase;margin-bottom:28px}
+.found h2{font-family:var(--ff-d);font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:600;color:var(--navy);margin-bottom:16px;line-height:1.2}
+.found-sub{font-size:1.05rem;color:var(--txt-l);line-height:1.7;max-width:500px;margin:0 auto 40px}
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px;text-align:left}
+.tier{padding:32px;border-radius:20px;border:1.5px solid rgba(201,169,110,.2);transition:all .3s}
+.tier:hover{border-color:var(--gold);box-shadow:0 8px 30px rgba(201,169,110,.12)}
+.tier-pop{border-color:var(--gold);background:rgba(201,169,110,.04);position:relative}
+.tier-pop::after{content:'MOST POPULAR';position:absolute;top:-11px;right:24px;background:var(--gold);color:var(--wht);font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:4px 12px;border-radius:100px}
+.t-name{font-family:var(--ff-d);font-size:1.15rem;font-weight:600;color:var(--navy);margin-bottom:6px}
+.t-price{display:flex;align-items:baseline;gap:4px;margin-bottom:16px}
+.t-amt{font-family:var(--ff-d);font-size:2rem;font-weight:700;color:var(--navy)}
+.t-per{font-size:.85rem;color:var(--txt-l)}
+.t-feat{list-style:none;display:flex;flex-direction:column;gap:10px}
+.t-feat li{font-size:.88rem;color:var(--txt-l);display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+.t-feat li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
+.t-cta{display:block;width:100%;padding:14px;margin-top:20px;border-radius:14px;border:none;font-family:var(--ff-b);font-size:.9rem;font-weight:600;cursor:pointer;letter-spacing:.03em;transition:all .3s}
+.t-cta-p{background:var(--navy);color:var(--cream)}
+.t-cta-p:hover{background:var(--navy-l)}
+.t-cta-s{background:rgba(15,26,46,.06);color:var(--navy)}
+.t-cta-s:hover{background:rgba(15,26,46,.1)}
+.found-note{font-size:.82rem;color:var(--txt-l);font-style:italic}
+
+.wl{padding:120px 0}
+.wl .ctn{max-width:640px;text-align:center}
+.wl h2{font-family:var(--ff-d);font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:600;color:var(--navy);margin-bottom:12px}
+.wl-sub{font-size:1.05rem;color:var(--txt-l);margin-bottom:40px;line-height:1.6}
+.wl-form{display:flex;gap:12px;max-width:480px;margin:0 auto}
+.wl-form input{flex:1;padding:16px 24px;border:1.5px solid rgba(201,169,110,.25);border-radius:100px;font-family:var(--ff-b);font-size:.95rem;background:var(--wht);color:var(--txt);outline:none;transition:border-color .3s}
+.wl-form input:focus{border-color:var(--gold)}
+.wl-form input::placeholder{color:#B5B5B5}
+.wl-form button{padding:16px 32px;background:var(--navy);color:var(--cream);border:none;border-radius:100px;font-family:var(--ff-b);font-size:.95rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .3s;letter-spacing:.03em}
+.wl-form button:hover{background:var(--navy-l);transform:translateY(-1px)}
+.wl-form button:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.wl-ok{display:none;padding:20px 28px;background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.25);border-radius:16px;font-size:.95rem;color:var(--navy);max-width:480px;margin:0 auto}
+.wl-err{display:none;padding:12px 20px;background:rgba(212,100,100,.08);border:1px solid rgba(212,100,100,.2);border-radius:12px;font-size:.88rem;color:#8B3A3A;margin-top:12px;max-width:480px;margin-left:auto;margin-right:auto}
+.wl-count{font-size:.85rem;color:var(--txt-l);margin-top:20px}
+.wl-count strong{color:var(--gold);font-weight:600}
+
+.faq{padding:120px 0;background:var(--cream-d)}
+.faq .ctn{max-width:760px}
+.faq-g{display:flex;flex-direction:column;gap:12px}
+.fq{background:var(--wht);border-radius:16px;border:1px solid rgba(201,169,110,.1);overflow:hidden;transition:border-color .3s}
+.fq:hover{border-color:rgba(201,169,110,.25)}
+.fq-q{padding:24px 28px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:16px}
+.fq-q h3{font-family:var(--ff-d);font-size:1.05rem;font-weight:500;color:var(--navy)}
+.fq-t{width:28px;height:28px;border-radius:50%;background:rgba(201,169,110,.1);display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0;font-size:1.1rem;color:var(--gold)}
+.fq.open .fq-t{background:var(--gold);color:var(--wht);transform:rotate(45deg)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}
+.fq-a-in{padding:0 28px 24px;font-size:.92rem;color:var(--txt-l);line-height:1.7}
+
+footer{padding:60px 0 40px;border-top:1px solid rgba(201,169,110,.12)}
+footer .ctn{display:flex;justify-content:space-between;align-items:center}
+.ft-l .logo{font-size:1.4rem;margin-bottom:8px;display:block}
+.ft-tag{font-size:.85rem;color:var(--txt-l)}
+.ft-links{display:flex;gap:28px}
+.ft-links a{font-size:.85rem;color:var(--txt-l);text-decoration:none;transition:color .3s}
+.ft-links a:hover{color:var(--navy)}
+.ft-btm{text-align:center;padding-top:40px;margin-top:40px;border-top:1px solid rgba(201,169,110,.08);font-size:.78rem;color:var(--txt-l)}
+
+@keyframes fu{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fr{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  .hero .ctn{grid-template-columns:1fr;gap:60px;text-align:center}
+  .hero-s{margin-left:auto;margin-right:auto}
+  .hero-a{justify-content:center}
+  .hero-st{justify-content:center}
+  .hero-v{order:-1}
+  .ph-m{max-width:280px}
+  .fl{display:none}
+  .steps{grid-template-columns:1fr;gap:40px}
+  .steps::before{display:none}
+  .fg{grid-template-columns:1fr}
+  .tiers{grid-template-columns:1fr}
+  .found-c{padding:40px 28px}
+}
+@media(max-width:640px){
+  .nav-l{display:none}
+  .mob-btn{display:block}
+  .hero{padding:100px 0 60px}
+  .hero h1{font-size:2.2rem}
+  .hero-a{flex-direction:column}
+  .hero-a .bp,.hero-a .bs{width:100%;justify-content:center}
+  .hero-st{gap:24px}
+  .wl-form{flex-direction:column}
+  .wl-form button{width:100%}
+  .fc{padding:28px}
+  footer .ctn{flex-direction:column;gap:24px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="ctn">
+    <a href="#" class="logo">Aurelle<span>.</span></a>
+    <div class="nav-l">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#founding">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#waitlist" class="nav-c">Join Waitlist</a>
+    </div>
+    <button class="mob-btn" aria-label="Menu" onclick="this.classList.toggle('open');document.querySelector('.nav-l').style.display=this.classList.contains('open')?'flex':'none';document.querySelector('.nav-l').style.flexDirection='column';document.querySelector('.nav-l').style.position='absolute';document.querySelector('.nav-l').style.top='70px';document.querySelector('.nav-l').style.right='24px';document.querySelector('.nav-l').style.background='white';document.querySelector('.nav-l').style.padding='20px';document.querySelector('.nav-l').style.borderRadius='16px';document.querySelector('.nav-l').style.boxShadow='0 8px 30px rgba(0,0,0,0.1)'">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="ctn">
+    <div class="hero-c">
+      <div class="badge">Coming Soon — Spring 2026</div>
+      <h1>Your wardrobe,<br>styled by <em>AI</em></h1>
+      <p class="hero-s">Aurelle digitises your wardrobe, learns your unique style, and delivers personalised outfit suggestions every morning — aware of your weather, your calendar, and your mood.</p>
+      <div class="hero-a">
+        <a href="#waitlist" class="bp">Join the Waitlist →</a>
+        <a href="#how" class="bs">See How It Works</a>
+      </div>
+      <div class="hero-st">
+        <div><div class="st-n">30 sec</div><div class="st-l">Average outfit decision</div></div>
+        <div><div class="st-n">92%</div><div class="st-l">Style match accuracy</div></div>
+        <div><div class="st-n">€1,200+</div><div class="st-l">Avg. wardrobe savings / yr</div></div>
+      </div>
+    </div>
+    <div class="hero-v">
+      <div class="ph-m">
+        <div class="fl fl1"><div class="fl-i">☀️</div><div><div style="font-weight:600;font-size:.85rem">14°C, Sunny</div><div style="font-size:.72rem;color:var(--txt-l)">Berlin</div></div></div>
+        <div class="fl fl2"><div class="fl-i">📅</div><div><div style="font-weight:600;font-size:.85rem">Dinner at 19:00</div><div style="font-size:.72rem;color:var(--txt-l)">Smart Casual</div></div></div>
+        <div class="ph-f">
+          <div class="ph-n"></div>
+          <div class="ph-s">
+            <div class="mh"><div class="mg">Good Morning, Elena</div><div class="mt">Today's Look</div></div>
+            <div class="mw">☀️ &nbsp;14°C &nbsp;·&nbsp; Sunny &nbsp;·&nbsp; Light breeze</div>
+            <div class="mc">
+              <div class="ml">Suggestion 1 of 3</div>
+              <div class="mgr">
+                <div class="mi">🧥</div><div class="mi">👔</div>
+                <div class="mi">👜</div><div class="mi">👠</div>
+              </div>
+              <div class="mr"><strong>Why this works:</strong> Your cream blazer pairs beautifully with navy — perfect for tonight's dinner. Light enough for 14°C.</div>
+              <div class="ma">
+                <button class="mb mb1">♥ Love it</button>
+                <button class="mb mb2">Skip</button>
+                <button class="mb mb3">Swap</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="intg">
+  <div class="ctn">
+    <div class="intg-l">Integrating with your favourite platforms</div>
+    <div class="intg-g">
+      <span>Zalando</span><span>ASOS</span><span>H&amp;M</span><span>Zara</span><span>&amp; Other Stories</span>
+    </div>
+  </div>
+</section>
+
+<section class="how reveal" id="how">
+  <div class="ctn">
+    <div class="sl">How It Works</div>
+    <h2 class="stt">Three steps to<br>effortless style</h2>
+    <p class="ssb">No fashion expertise needed. Aurelle learns what makes you feel confident and beautiful.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <div class="step-i">📸</div>
+        <h3>Photograph Your Wardrobe</h3>
+        <p>Snap photos of your clothes. Aurelle's AI instantly identifies every garment — colour, fabric, style, season — and builds your digital closet.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div class="step-i">✨</div>
+        <h3>Teach Your Style</h3>
+        <p>Swipe through outfits to train your Style DNA. Aurelle learns what you love, what you avoid, and what makes you feel your best.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div class="step-i">👗</div>
+        <h3>Get Styled Every Morning</h3>
+        <p>Wake up to 3–5 personalised outfit suggestions based on today's weather, your calendar, and your evolving taste. Just pick and go.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feat reveal" id="features">
+  <div class="ctn">
+    <div class="sl">Features</div>
+    <h2 class="stt">Everything your<br>stylist would do</h2>
+    <p class="ssb">Aurelle combines AI intelligence with fashion expertise to give you a personal stylist that's always learning.</p>
+    <div class="fg">
+      <div class="fc">
+        <div class="fc-i">🧠</div>
+        <h3>AI Wardrobe Recognition</h3>
+        <p>Take a photo — Aurelle identifies the garment type, colours, pattern, fabric, and formality level in seconds. No manual tagging needed.</p>
+      </div>
+      <div class="fc">
+        <div class="fc-i">🌤️</div>
+        <h3>Weather-Aware Styling</h3>
+        <p>Every suggestion considers today's temperature, rain forecast, humidity, and wind. Never overdress or underdress again.</p>
+      </div>
+      <div class="fc">
+        <div class="fc-i">📅</div>
+        <h3>Calendar-Smart Outfits</h3>
+        <p>Connected to your calendar, Aurelle reads your events and adjusts formality automatically. Board meeting at 9? Date night at 7? Handled.</p>
+      </div>
+      <div class="fc">
+        <div class="fc-i">🛍️</div>
+        <h3>Smart Shopping</h3>
+        <p>Aurelle analyses your wardrobe gaps and suggests pieces that maximise outfit combinations — with your budget in mind.</p>
+      </div>
+      <div class="fc">
+        <div class="fc-i">🧳</div>
+        <h3>Travel Packing Lists</h3>
+        <p>Tell Aurelle where you're going. It creates day-by-day outfit plans optimised for minimal packing and maximum style.</p>
+      </div>
+      <div class="fc">
+        <div class="fc-i">📊</div>
+        <h3>Wardrobe Analytics</h3>
+        <p>Discover your cost-per-wear, most-loved pieces, and forgotten items. Make smarter decisions about what to keep, donate, or buy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="found reveal" id="founding">
+  <div class="ctn">
+    <div class="found-c">
+      <div class="found-b">✦ Limited Offer</div>
+      <h2>Become a Founding Member</h2>
+      <p class="found-sub">Lock in lifetime access at a fraction of the future price. Founding members shape the product and get exclusive perks forever.</p>
+      <div class="tiers">
+        <div class="tier tier-pop">
+          <div class="t-name">Founding Member</div>
+          <div class="t-price"><span class="t-amt">€29</span><span class="t-per">one-time, forever</span></div>
+          <ul class="t-feat">
+            <li>Lifetime Premium access (worth €120/year)</li>
+            <li>Unlimited wardrobe items</li>
+            <li>All AI features included</li>
+            <li>Priority access to new features</li>
+            <li>Early beta access</li>
+          </ul>
+          <button class="t-cta t-cta-p" onclick="window.open('https://buy.stripe.com/bJecN65Cpgpw7aj3MGgMw00','_blank')">Claim Your Spot →</button>
+        </div>
+        <div class="tier">
+          <div class="t-name">VIP Founder</div>
+          <div class="t-price"><span class="t-amt">€79</span><span class="t-per">one-time, forever</span></div>
+          <ul class="t-feat">
+            <li>Everything in Founding Member</li>
+            <li>Lifetime Pro access (worth €240/year)</li>
+            <li>Name in app credits</li>
+            <li>Exclusive Founder badge on profile</li>
+            <li>Direct line to the founder</li>
+          </ul>
+          <button class="t-cta t-cta-s" onclick="window.open('https://buy.stripe.com/7sY7sM0i58X41PZab4gMw01','_blank')">Become VIP →</button>
+        </div>
+      </div>
+      <p class="found-note">Only 500 Founding Member spots and 100 VIP spots available. Prices increase at launch.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wl reveal" id="waitlist">
+  <div class="ctn">
+    <div class="sl">Join the Waitlist</div>
+    <h2>Be the first to<br>experience Aurelle</h2>
+    <p class="wl-sub">Sign up for free early access. No spam, ever — just a notification when it's your turn.</p>
+    <form class="wl-form" id="wlForm" onsubmit="return handleWaitlist(event)">
+      <input type="email" id="wlEmail" placeholder="Enter your email address" required>
+      <button type="submit" id="wlBtn">Join Free</button>
+    </form>
+    <div class="wl-ok" id="wlOk">✨ <strong>You're in!</strong> Welcome to the Aurelle community. We'll notify you as soon as early access opens.</div>
+    <div class="wl-err" id="wlErr"></div>
+    <div class="wl-count" id="wlCount"></div>
+  </div>
+</section>
+
+<section class="faq reveal" id="faq">
+  <div class="ctn">
+    <div class="sl">FAQ</div>
+    <h2 class="stt" style="margin-bottom:48px">Questions? Answers.</h2>
+    <div class="faq-g">
+      <div class="fq" onclick="toggleFaq(this)">
+        <div class="fq-q"><h3>When will Aurelle launch?</h3><div class="fq-t">+</div></div>
+        <div class="fq-a"><div class="fq-a-in">We're targeting Spring 2026 for the beta launch. Founding Members and waitlist subscribers will get early access before the public release. Sign up to be first in line.</div></div>
+      </div>
+      <div class="fq" onclick="toggleFaq(this)">
+        <div class="fq-q"><h3>Which platforms will Aurelle be available on?</h3><div class="fq-t">+</div></div>
+        <div class="fq-a"><div class="fq-a-in">Aurelle will launch on both iOS and Android, with a web companion app. Your wardrobe and preferences sync seamlessly across all devices.</div></div>
+      </div>
+      <div class="fq" onclick="toggleFaq(this)">
+        <div class="fq-q"><h3>How does the AI styling work?</h3><div class="fq-t">+</div></div>
+        <div class="fq-a"><div class="fq-a-in">Aurelle uses advanced AI to analyse your wardrobe, understand your style preferences through a simple swipe exercise, and generate outfit combinations that match your taste, the weather, and your schedule. The more you use it, the better it gets.</div></div>
+      </div>
+      <div class="fq" onclick="toggleFaq(this)">
+        <div class="fq-q"><h3>Is my data safe?</h3><div class="fq-t">+</div></div>
+        <div class="fq-a"><div class="fq-a-in">Absolutely. Aurelle is built with privacy-first principles and is fully GDPR compliant. Your wardrobe photos and personal data are encrypted and never shared with third parties. You can export or delete all your data at any time.</div></div>
+      </div>
+      <div class="fq" onclick="toggleFaq(this)">
+        <div class="fq-q"><h3>What does "Founding Member" include?</h3><div class="fq-t">+</div></div>
+        <div class="fq-a"><div class="fq-a-in">Founding Members pay a one-time fee of €29 and receive lifetime Premium access — that's all AI features, unlimited wardrobe items, and every future update, forever. No subscriptions. The regular price at launch will be €9.99/month.</div></div>
+      </div>
+      <div class="fq" onclick="toggleFaq(this)">
+        <div class="fq-q"><h3>Can I get a refund if I don't like it?</h3><div class="fq-t">+</div></div>
+        <div class="fq-a"><div class="fq-a-in">Yes. We offer a 30-day money-back guarantee for all Founding Member and VIP purchases. If Aurelle isn't for you, we'll refund you in full, no questions asked.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ctn">
+    <div class="ft-l">
+      <a href="#" class="logo">Aurelle<span>.</span></a>
+      <div class="ft-tag">Your AI style aura</div>
+    </div>
+    <div class="ft-links">
+      <a href="mailto:hello@aurelle.app">Contact</a>
+      <a href="#" onclick="alert('Privacy policy coming soon');return false;">Privacy</a>
+      <a href="#" onclick="alert('Terms coming soon');return false;">Terms</a>
+    </div>
+  </div>
+  <div class="ft-btm ctn">© 2026 Aurelle. All rights reserved. Made with ♥ in Europe.</div>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://dwiijfkgltguonmpgdaw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3aWlqZmtnbHRndW9ubXBnZGF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1ODA2NzEsImV4cCI6MjA4NjE1NjY3MX0.U8JLClf0iXEDW9FhthDtozYJ4Midx92oTVOFkDxCBnM';
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function toggleFaq(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.fq').forEach(f => {
+    f.classList.remove('open');
+    f.querySelector('.fq-a').style.maxHeight = '0';
+  });
+  if (!wasOpen) {
+    el.classList.add('open');
+    const answer = el.querySelector('.fq-a');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+async function handleWaitlist(e) {
+  e.preventDefault();
+  const email = document.getElementById('wlEmail').value.trim();
+  const btn = document.getElementById('wlBtn');
+  const errEl = document.getElementById('wlErr');
+  const okEl = document.getElementById('wlOk');
+  
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Joining...';
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ email, tier: 'free', source: 'landing_page' })
+    });
+
+    if (res.ok) {
+      document.getElementById('wlForm').style.display = 'none';
+      okEl.style.display = 'block';
+      updateCount();
+    } else if (res.status === 409) {
+      errEl.textContent = "You're already on the waitlist! We'll be in touch soon.";
+      errEl.style.display = 'block';
+    } else {
+      const data = await res.json().catch(() => ({}));
+      if (data.message && data.message.includes('duplicate')) {
+        errEl.textContent = "You're already on the waitlist! We'll be in touch soon.";
+      } else {
+        errEl.textContent = 'Something went wrong. Please try again.';
+      }
+      errEl.style.display = 'block';
+    }
+  } catch (err) {
+    errEl.textContent = 'Connection error. Please check your internet and try again.';
+    errEl.style.display = 'block';
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'Join Free';
+}
+
+async function updateCount() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist?select=id`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Prefer': 'count=exact'
+      }
+    });
+    const count = res.headers.get('content-range');
+    if (count) {
+      const total = count.split('/')[1];
+      if (total && parseInt(total) > 0) {
+        document.getElementById('wlCount').innerHTML = `<strong>${total}</strong> people have already joined the waitlist`;
+      }
+    }
+  } catch (e) {}
+}
+
+updateCount();
+</script>
+</body>
+</html>
