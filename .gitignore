@@ -1,0 +1,13 @@
+
+# Environment files
+.env
+.env.local
+.env.production
+apps/web/.env.local
+apps/mobile/.env
+
+# macOS
+.DS_Store
+
+# Expo
+apps/mobile/.expo/
