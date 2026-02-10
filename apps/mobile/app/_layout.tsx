@@ -1,59 +1,51 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { useRouter, useSegments, Slot } from 'expo-router';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { AuthProvider, useAuth } from '../lib/auth-context';
 
-import { useColorScheme } from '@/components/useColorScheme';
+const NAVY = '#1B2A4A';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+function AuthGuard() {
+  const { session, loading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (loading) return;
+
+    const inAuthGroup = segments[0] === '(auth)';
+
+    if (!session && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (session && inAuthGroup) {
+      router.replace('/(tabs)');
     }
-  }, [loaded]);
+  }, [session, loading, segments]);
 
-  if (!loaded) {
-    return null;
+  if (loading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color={NAVY} />
+      </View>
+    );
   }
 
-  return <RootLayoutNav />;
+  return <Slot />;
 }
 
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <AuthProvider>
+      <AuthGuard />
+    </AuthProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F0F4F8',
+  },
+});
